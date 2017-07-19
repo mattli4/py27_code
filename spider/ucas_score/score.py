@@ -12,7 +12,10 @@ class Score:
         self.course_system = self.login_page + '/portal/site/226/821'
         self.course_base = 'http://jwxk.ucas.ac.cn'
         self.course_identify = self.course_base + '/login?Identity='
-        self.score_page = self.course_base + '/score/yjs/49345'  #all
+        self.score_page_all = self.course_base + '/score/yjs/all'  #all
+        self.score_page_autumn = self.course_base + '/score/yjs/49344'
+        self.score_page_spring = self.course_base + '/score/yjs/49345'
+        self.score_page_summer = self.course_base + '/score/yjs/49346'
         self.headers = {
             'Host': 'sep.ucas.ac.cn',
             'Connection': 'keep-alive',
@@ -35,6 +38,24 @@ class Score:
             print 'login success.'
 
     def query(self):
+        while True:
+            try:
+                choose = input('please choose term:\n1. all\t2. autumn\t3. spring\t 4. summer\n')
+                if choose == 1:
+                    score2query = self.score_page_all
+                    break
+                elif choose == 2:
+                    score2query = self.score_page_autumn
+                    break
+                elif choose == 3:
+                    score2query = self.score_page_spring
+                    break
+                elif choose == 4:
+                    score2query = self.score_page_summer
+                    break
+            except Exception as e:
+                print 'input invalid.'
+                continue
         print 'querying now...'
         get_response = self.session.get(self.course_system, headers=self.headers)
         soup = BeautifulSoup(get_response.text, 'html.parser')
@@ -42,19 +63,22 @@ class Score:
             identity = str(soup).split('Identity=')[1].split('"'[0])[0]
             course_page = self.course_identify + identity
             reponse = self.session.get(course_page)
-            score_response = self.session.get(self.score_page)
+            score_response = self.session.get(score2query)
             print 'querying ok. showing result...'
             score_soup = BeautifulSoup(score_response.text, 'html.parser')
             score_table = score_soup.find_all('table')[1]
             score_body = score_table.tbody
             subject = score_body.find_all('tr')
-            print '*' * 35
-            for item in subject:
-                all = item.find_all('td')
-                name = all[0].string
-                score = all[2].string
-                print name, score
-            print '*' * 35
+            if subject is not []:
+                print '*' * 35
+                for item in subject:
+                    all = item.find_all('td')
+                    name = all[0].string
+                    score = all[2].string
+                    print name, score
+                print '*' * 35
+            else:
+                print 'no score.'
             print 'end.'
         except Exception as e:
             print e.message
@@ -64,5 +88,5 @@ class Score:
         self.query()
 
 if __name__ == '__main__':
-    score = Score('hahaha', 'xixixi')
+    score = Score('xixixi', 'hahaha')
     score.query_score()
