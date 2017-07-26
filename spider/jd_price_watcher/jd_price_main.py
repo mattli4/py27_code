@@ -11,6 +11,6 @@ if __name__ == '__main__':
         w.modifiy_xml_firstread()
     db.insert()
     dic = db.query()
-    print dic
+    #print dic
     plt = PlotGraph(dic, w.name)
     plt.gen_graph()

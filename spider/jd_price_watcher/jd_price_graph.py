@@ -17,7 +17,7 @@ class PlotGraph:
         base_item = price_dict[0]
         Y.append(base_item['price'])
         cur_time = base_item['time']
-        x_lable.append(cur_time)
+        x_lable.append(cur_time.replace(' ', '\n'))
         time_array = time.strptime(cur_time, "%Y-%m-%d %H:%M:%S")
         base_time_stamp = int(time.mktime(time_array))
         X.append(0)
@@ -25,7 +25,7 @@ class PlotGraph:
         for item in price_dict:
             Y.append(item['price'])
             cur_time = item['time']
-            x_lable.append(cur_time)
+            x_lable.append(cur_time.replace(' ', '\n'))
             time_array = time.strptime(cur_time, "%Y-%m-%d %H:%M:%S")
             time_stamp = int(time.mktime(time_array))
             diff = time_stamp - base_time_stamp
