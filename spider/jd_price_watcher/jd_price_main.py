@@ -1,6 +1,6 @@
 from jd_price_crawler import Watcher
 from jd_price_db import PriceDatabase
-
+from jd_price_graph import PlotGraph
 
 if __name__ == '__main__':
     w = Watcher()
@@ -12,3 +12,5 @@ if __name__ == '__main__':
     db.insert()
     dic = db.query()
     print dic
+    plt = PlotGraph(dic, w.name)
+    plt.gen_graph()

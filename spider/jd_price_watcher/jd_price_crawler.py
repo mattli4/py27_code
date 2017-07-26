@@ -43,4 +43,3 @@ class Watcher:
         with open('./config.xml', 'w') as f:
             self.doc.writexml(f, addindent=' ', newl='\n', encoding='utf-8')
         f.close()
-
